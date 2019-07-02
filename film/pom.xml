@@ -31,6 +31,7 @@
         <apache-common.version>3.9</apache-common.version>
         <dubbo.version>2.0.0</dubbo.version>
         <zk-client.version>0.9</zk-client.version>
+        <page-helper.version>1.2.10</page-helper.version>
     </properties>
 
     <dependencies>
@@ -39,7 +40,11 @@
             <artifactId>spring-boot-starter</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${page-helper.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
