@@ -1,9 +1,6 @@
 package club.lightingsummer.movie.film.api.api;
 
-import club.lightingsummer.movie.film.api.vo.BannerVO;
-import club.lightingsummer.movie.film.api.vo.CommonResponse;
-import club.lightingsummer.movie.film.api.vo.FilmInfoVO;
-import club.lightingsummer.movie.film.api.vo.FilmVO;
+import club.lightingsummer.movie.film.api.vo.*;
 
 import java.util.List;
 
@@ -23,4 +20,12 @@ public interface FilmInfoAPI {
     // 获取即将上映影片[受欢迎程度做排序]
     CommonResponse<FilmVO> getSoonFilms(boolean isLimit, int nums);
 
+    // 获取影片条件接口--分类条件
+    List<CatVO> getCats();
+
+    // 获取影片条件接口--片源条件
+    List<SourceVO> getSources();
+
+    // 获取影片条件接口--获取年代条件
+    List<YearVO> getYears();
 }

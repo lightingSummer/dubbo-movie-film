@@ -16,7 +16,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>club.lightingsummer.movie.film</groupId>
+    <groupId>club.lightingsummer.movie</groupId>
     <artifactId>film</artifactId>
     <version>1.0.0</version>
     <name>film</name>

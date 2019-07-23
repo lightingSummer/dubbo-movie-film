@@ -4,6 +4,8 @@ import club.lightingsummer.movie.film.api.po.Source;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface SourceMapper {
@@ -18,4 +20,6 @@ public interface SourceMapper {
     int updateByPrimaryKeySelective(Source record);
 
     int updateByPrimaryKey(Source record);
+
+    List<Source> selectSourceList();
 }

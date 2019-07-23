@@ -4,6 +4,8 @@ import club.lightingsummer.movie.film.api.po.YearDict;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface YearDictMapper {
@@ -18,4 +20,6 @@ public interface YearDictMapper {
     int updateByPrimaryKeySelective(YearDict record);
 
     int updateByPrimaryKey(YearDict record);
+
+    List<YearDict> selectYearList();
 }

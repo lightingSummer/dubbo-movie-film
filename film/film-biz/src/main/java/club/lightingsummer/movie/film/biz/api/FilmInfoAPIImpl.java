@@ -2,15 +2,10 @@ package club.lightingsummer.movie.film.biz.api;
 
 import club.lightingsummer.movie.film.api.api.FilmInfoAPI;
 import club.lightingsummer.movie.film.api.enums.ResponseStatus;
-import club.lightingsummer.movie.film.api.po.Banner;
-import club.lightingsummer.movie.film.api.po.Film;
-import club.lightingsummer.movie.film.api.vo.BannerVO;
-import club.lightingsummer.movie.film.api.vo.CommonResponse;
-import club.lightingsummer.movie.film.api.vo.FilmInfoVO;
-import club.lightingsummer.movie.film.api.vo.FilmVO;
+import club.lightingsummer.movie.film.api.po.*;
+import club.lightingsummer.movie.film.api.vo.*;
 import club.lightingsummer.movie.film.biz.utils.VOUtil;
-import club.lightingsummer.movie.film.dal.dao.BannerMapper;
-import club.lightingsummer.movie.film.dal.dao.FilmMapper;
+import club.lightingsummer.movie.film.dal.dao.*;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
@@ -35,6 +30,12 @@ public class FilmInfoAPIImpl implements FilmInfoAPI {
     private FilmMapper filmMapper;
     @Autowired
     private BannerMapper bannerMapper;
+    @Autowired
+    private YearDictMapper yearDictMapper;
+    @Autowired
+    private CatDictMapper catDictMapper;
+    @Autowired
+    private SourceMapper sourceMapper;
 
     /**
      * @author: lightingSummer
@@ -127,6 +128,75 @@ public class FilmInfoAPIImpl implements FilmInfoAPI {
         }
         commonResponse.setData(filmVO);
         return commonResponse;
+    }
+
+    /**
+     * @author: lightingSummer
+     * @date: 2019/7/23 0023
+     * @description: 获取影片条件接口--片源条件
+     * @return java.util.List<club.lightingsummer.movie.film.api.vo.SourceVO>
+     */
+    @Override
+    public List<SourceVO> getSources() {
+        List<SourceVO> response = new ArrayList<>();
+        try {
+            List<Source> sourceList = sourceMapper.selectSourceList();
+            for (Source source : sourceList) {
+                SourceVO sourceVO = new SourceVO();
+                sourceVO.setSourceId(source.getUuid() + "");
+                sourceVO.setSourceName(source.getShowName());
+                response.add(sourceVO);
+            }
+        } catch (Exception e) {
+            logger.error("获取影片片源条件失败" + e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * @author: lightingSummer
+     * @date: 2019/7/23 0023
+     * @description: 获取影片条件接口--获取年代条件
+     * @return java.util.List<club.lightingsummer.movie.film.api.vo.YearVO>
+     */
+    @Override
+    public List<YearVO> getYears() {
+        List<YearVO> response = new ArrayList<>();
+        try {
+            List<YearDict> yearDictList = yearDictMapper.selectYearList();
+            for (YearDict yearInfo : yearDictList) {
+                YearVO yearVO = new YearVO();
+                yearVO.setYearId(yearInfo.getUuid() + "");
+                yearVO.setYearName(yearInfo.getShowName());
+                response.add(yearVO);
+            }
+        } catch (Exception e) {
+            logger.error("获取年代条件失败" + e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * @author: lightingSummer
+     * @date: 2019/7/23 0023
+     * @description: 获取影片条件接口--分类条件
+     * @return java.util.List<club.lightingsummer.movie.film.api.vo.CatVO>
+     */
+    @Override
+    public List<CatVO> getCats() {
+        List<CatVO> response = new ArrayList<>();
+        try {
+            List<CatDict> catDictList = catDictMapper.selectCatList();
+            for (CatDict catDict : catDictList) {
+                CatVO catVO = new CatVO();
+                catVO.setCatId(catDict.getUuid() + "");
+                catVO.setCatName(catDict.getShowName());
+                response.add(catVO);
+            }
+        } catch (Exception e) {
+            logger.error("获取影片分类条件失败" + e.getMessage());
+        }
+        return response;
     }
 
 }

@@ -4,6 +4,8 @@ import club.lightingsummer.movie.film.api.po.CatDict;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @Mapper
 public interface CatDictMapper {
@@ -18,4 +20,6 @@ public interface CatDictMapper {
     int updateByPrimaryKeySelective(CatDict record);
 
     int updateByPrimaryKey(CatDict record);
+
+    List<CatDict> selectCatList();
 }

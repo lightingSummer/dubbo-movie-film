@@ -13,10 +13,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(scanBasePackages = "club.lightingsummer.movie.film")
 @MapperScan("club.lightingsummer.movie.film.dal.dao")
 @EnableDubboConfiguration
-public class FilmBziMain {
+public class FilmBizMain {
 
     public static void main(String[] args) {
-        SpringApplication.run(FilmBziMain.class, args);
+        SpringApplication.run(FilmBizMain.class, args);
     }
 
 }

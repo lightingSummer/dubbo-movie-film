@@ -9,12 +9,17 @@
     UUID, show_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_source
     where UUID = #{uuid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectSourceList" resultType="club.lightingsummer.movie.film.api.po.Source">
+      select
+      <include refid="Base_Column_List" />
+      from tb_source
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_source
     where UUID = #{uuid,jdbcType=INTEGER}
   </delete>
