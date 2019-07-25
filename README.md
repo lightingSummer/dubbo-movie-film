@@ -2,13 +2,12 @@
 based dubbo project film模块<br>
 影院模块<br>
 
-##用到的技术及实现主要功能<br>
-使用dubbo提供film信息各种查询服务<br>
-使用springboot作为后端主要框架<br>
-使用zookeeper做注册中心，用于服务注册及调用<br>
-使用mysql5.7作为数据库存储，mybatis做查询，mybatis-generator生成xml映射，pagehelper做分页<br>
+## 用到的技术及实现主要功能<br>
+* 使用dubbo提供film信息各种查询服务，使用zookeeper做注册中心，用于服务注册及调用<br>
+* 使用springboot作为后端主要框架<br>
+* 使用mysql5.7作为数据库存储，mybatis做查询，mybatis-generator生成xml映射，pagehelper做分页<br>
 
-##api列表<br>
+## api列表<br>
 
 * 电影信息API，用于获取电影信息接口<br>
 ```java
@@ -83,7 +82,7 @@ public interface FilmAsyncServiceApi {
 ```
 
 
-##数据表ddl<br>
+## 数据表ddl<br>
 
 ```sql
 CREATE TABLE `tb_actor` (
