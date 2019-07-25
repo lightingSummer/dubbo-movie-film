@@ -1,36 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club.lightingsummer.movie.film.dal.dao.FilmMapper">
-  <resultMap id="BaseResultMap" type="club.lightingsummer.movie.film.api.po.Film">
-    <id column="UUID" jdbcType="INTEGER" property="uuid" />
-    <result column="film_name" jdbcType="VARCHAR" property="filmName" />
-    <result column="film_type" jdbcType="INTEGER" property="filmType" />
-    <result column="img_address" jdbcType="VARCHAR" property="imgAddress" />
-    <result column="film_score" jdbcType="VARCHAR" property="filmScore" />
-    <result column="film_preSaleNum" jdbcType="INTEGER" property="filmPresalenum" />
-    <result column="film_box_office" jdbcType="INTEGER" property="filmBoxOffice" />
-    <result column="film_source" jdbcType="INTEGER" property="filmSource" />
-    <result column="film_cats" jdbcType="VARCHAR" property="filmCats" />
-    <result column="film_area" jdbcType="INTEGER" property="filmArea" />
-    <result column="film_date" jdbcType="INTEGER" property="filmDate" />
-    <result column="film_time" jdbcType="TIMESTAMP" property="filmTime" />
-    <result column="film_status" jdbcType="INTEGER" property="filmStatus" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="club.lightingsummer.movie.film.api.po.Film">
+        <id column="UUID" jdbcType="INTEGER" property="uuid"/>
+        <result column="film_name" jdbcType="VARCHAR" property="filmName"/>
+        <result column="film_type" jdbcType="INTEGER" property="filmType"/>
+        <result column="img_address" jdbcType="VARCHAR" property="imgAddress"/>
+        <result column="film_score" jdbcType="VARCHAR" property="filmScore"/>
+        <result column="film_preSaleNum" jdbcType="INTEGER" property="filmPresalenum"/>
+        <result column="film_box_office" jdbcType="INTEGER" property="filmBoxOffice"/>
+        <result column="film_source" jdbcType="INTEGER" property="filmSource"/>
+        <result column="film_cats" jdbcType="VARCHAR" property="filmCats"/>
+        <result column="film_area" jdbcType="INTEGER" property="filmArea"/>
+        <result column="film_date" jdbcType="INTEGER" property="filmDate"/>
+        <result column="film_time" jdbcType="TIMESTAMP" property="filmTime"/>
+        <result column="film_status" jdbcType="INTEGER" property="filmStatus"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     UUID, film_name, film_type, img_address, film_score, film_preSaleNum, film_box_office, 
     film_source, film_cats, film_area, film_date, film_time, film_status
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from tb_film
-    where UUID = #{uuid,jdbcType=INTEGER}
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_film
+        where UUID = #{uuid,jdbcType=INTEGER}
+    </select>
+    <select id="selectByFilmStatus" resultType="club.lightingsummer.movie.film.api.po.Film">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_film
+        where
+        film_status = #{filmStatus}
+        <if test="catId != null">
+            and film_cats like #{catId}
+        </if>
+        <if test="sourceId != 99">
+            and film_source = #{sourceId}
+        </if>
+        <if test="yearId != 99">
+            and film_date = #{yearId}
+        </if>
+    </select>
+    <select id="getFilmDetailByName" resultType="club.lightingsummer.movie.film.api.vo.FilmDetailVO">
+          SELECT
+                film.uuid AS filmId,
+                film.film_name AS filmName,
+                info.`film_en_name` AS filmEnName,
+                film.`img_address` AS imgAddress,
+                info.`film_score` AS score,
+                info.`film_score_num` AS scoreNum,
+                film.`film_box_office` AS totalBox,
+                (SELECT GROUP_CONCAT(show_name SEPARATOR ',') FROM tb_cat_dict t
+                  WHERE FIND_IN_SET (t.uuid,
+                    (SELECT REPLACE(TRIM(BOTH '#' FROM film_cats),'#',',') FROM tb_film t WHERE t.uuid=film.uuid))) AS info01,
+                CONCAT((SELECT show_name FROM tb_source t WHERE t.uuid=film.uuid),' / ',info.`film_length`,'分钟') info02,
+                CONCAT(film.`film_time`,(SELECT show_name FROM tb_source t WHERE t.uuid=film.uuid),'上映') info03
+          FROM tb_film film,tb_film_info info
+          WHERE film.`UUID` = info.`film_id`
+          AND film.film_name LIKE #{filmName}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="getFilmDetailById" resultType="club.lightingsummer.movie.film.api.vo.FilmDetailVO">
+        SELECT
+                film.uuid AS filmId,
+                film.film_name AS filmName,
+                info.`film_en_name` AS filmEnName,
+                film.`img_address` AS imgAddress,
+                info.`film_score` AS score,
+                info.`film_score_num` AS scoreNum,
+                film.`film_box_office` AS totalBox,
+                (SELECT GROUP_CONCAT(show_name SEPARATOR ',') FROM tb_cat_dict t
+                  WHERE FIND_IN_SET (t.uuid,
+                    (SELECT REPLACE(TRIM(BOTH '#' FROM film_cats),'#',',') FROM tb_film t WHERE t.uuid=film.uuid))) AS info01,
+                CONCAT((SELECT show_name FROM tb_source t WHERE t.uuid=film.uuid),' / ',info.`film_length`,'分钟') info02,
+                CONCAT(film.`film_time`,(SELECT show_name FROM tb_source t WHERE t.uuid=film.uuid),'上映') info03
+          FROM tb_film film,tb_film_info info
+          WHERE film.`UUID` = info.`film_id`
+          AND film.`UUID` = #{uuid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_film
     where UUID = #{uuid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="club.lightingsummer.movie.film.api.po.Film">
+    <insert id="insert" parameterType="club.lightingsummer.movie.film.api.po.Film">
     insert into tb_film (UUID, film_name, film_type, 
       img_address, film_score, film_preSaleNum, 
       film_box_office, film_source, film_cats, 
@@ -42,134 +94,134 @@
       #{filmArea,jdbcType=INTEGER}, #{filmDate,jdbcType=INTEGER}, #{filmTime,jdbcType=TIMESTAMP}, 
       #{filmStatus,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="club.lightingsummer.movie.film.api.po.Film">
-    insert into tb_film
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uuid != null">
-        UUID,
-      </if>
-      <if test="filmName != null">
-        film_name,
-      </if>
-      <if test="filmType != null">
-        film_type,
-      </if>
-      <if test="imgAddress != null">
-        img_address,
-      </if>
-      <if test="filmScore != null">
-        film_score,
-      </if>
-      <if test="filmPresalenum != null">
-        film_preSaleNum,
-      </if>
-      <if test="filmBoxOffice != null">
-        film_box_office,
-      </if>
-      <if test="filmSource != null">
-        film_source,
-      </if>
-      <if test="filmCats != null">
-        film_cats,
-      </if>
-      <if test="filmArea != null">
-        film_area,
-      </if>
-      <if test="filmDate != null">
-        film_date,
-      </if>
-      <if test="filmTime != null">
-        film_time,
-      </if>
-      <if test="filmStatus != null">
-        film_status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uuid != null">
-        #{uuid,jdbcType=INTEGER},
-      </if>
-      <if test="filmName != null">
-        #{filmName,jdbcType=VARCHAR},
-      </if>
-      <if test="filmType != null">
-        #{filmType,jdbcType=INTEGER},
-      </if>
-      <if test="imgAddress != null">
-        #{imgAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="filmScore != null">
-        #{filmScore,jdbcType=VARCHAR},
-      </if>
-      <if test="filmPresalenum != null">
-        #{filmPresalenum,jdbcType=INTEGER},
-      </if>
-      <if test="filmBoxOffice != null">
-        #{filmBoxOffice,jdbcType=INTEGER},
-      </if>
-      <if test="filmSource != null">
-        #{filmSource,jdbcType=INTEGER},
-      </if>
-      <if test="filmCats != null">
-        #{filmCats,jdbcType=VARCHAR},
-      </if>
-      <if test="filmArea != null">
-        #{filmArea,jdbcType=INTEGER},
-      </if>
-      <if test="filmDate != null">
-        #{filmDate,jdbcType=INTEGER},
-      </if>
-      <if test="filmTime != null">
-        #{filmTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="filmStatus != null">
-        #{filmStatus,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="club.lightingsummer.movie.film.api.po.Film">
-    update tb_film
-    <set>
-      <if test="filmName != null">
-        film_name = #{filmName,jdbcType=VARCHAR},
-      </if>
-      <if test="filmType != null">
-        film_type = #{filmType,jdbcType=INTEGER},
-      </if>
-      <if test="imgAddress != null">
-        img_address = #{imgAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="filmScore != null">
-        film_score = #{filmScore,jdbcType=VARCHAR},
-      </if>
-      <if test="filmPresalenum != null">
-        film_preSaleNum = #{filmPresalenum,jdbcType=INTEGER},
-      </if>
-      <if test="filmBoxOffice != null">
-        film_box_office = #{filmBoxOffice,jdbcType=INTEGER},
-      </if>
-      <if test="filmSource != null">
-        film_source = #{filmSource,jdbcType=INTEGER},
-      </if>
-      <if test="filmCats != null">
-        film_cats = #{filmCats,jdbcType=VARCHAR},
-      </if>
-      <if test="filmArea != null">
-        film_area = #{filmArea,jdbcType=INTEGER},
-      </if>
-      <if test="filmDate != null">
-        film_date = #{filmDate,jdbcType=INTEGER},
-      </if>
-      <if test="filmTime != null">
-        film_time = #{filmTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="filmStatus != null">
-        film_status = #{filmStatus,jdbcType=INTEGER},
-      </if>
-    </set>
-    where UUID = #{uuid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="club.lightingsummer.movie.film.api.po.Film">
+    <insert id="insertSelective" parameterType="club.lightingsummer.movie.film.api.po.Film">
+        insert into tb_film
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                UUID,
+            </if>
+            <if test="filmName != null">
+                film_name,
+            </if>
+            <if test="filmType != null">
+                film_type,
+            </if>
+            <if test="imgAddress != null">
+                img_address,
+            </if>
+            <if test="filmScore != null">
+                film_score,
+            </if>
+            <if test="filmPresalenum != null">
+                film_preSaleNum,
+            </if>
+            <if test="filmBoxOffice != null">
+                film_box_office,
+            </if>
+            <if test="filmSource != null">
+                film_source,
+            </if>
+            <if test="filmCats != null">
+                film_cats,
+            </if>
+            <if test="filmArea != null">
+                film_area,
+            </if>
+            <if test="filmDate != null">
+                film_date,
+            </if>
+            <if test="filmTime != null">
+                film_time,
+            </if>
+            <if test="filmStatus != null">
+                film_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                #{uuid,jdbcType=INTEGER},
+            </if>
+            <if test="filmName != null">
+                #{filmName,jdbcType=VARCHAR},
+            </if>
+            <if test="filmType != null">
+                #{filmType,jdbcType=INTEGER},
+            </if>
+            <if test="imgAddress != null">
+                #{imgAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="filmScore != null">
+                #{filmScore,jdbcType=VARCHAR},
+            </if>
+            <if test="filmPresalenum != null">
+                #{filmPresalenum,jdbcType=INTEGER},
+            </if>
+            <if test="filmBoxOffice != null">
+                #{filmBoxOffice,jdbcType=INTEGER},
+            </if>
+            <if test="filmSource != null">
+                #{filmSource,jdbcType=INTEGER},
+            </if>
+            <if test="filmCats != null">
+                #{filmCats,jdbcType=VARCHAR},
+            </if>
+            <if test="filmArea != null">
+                #{filmArea,jdbcType=INTEGER},
+            </if>
+            <if test="filmDate != null">
+                #{filmDate,jdbcType=INTEGER},
+            </if>
+            <if test="filmTime != null">
+                #{filmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="filmStatus != null">
+                #{filmStatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="club.lightingsummer.movie.film.api.po.Film">
+        update tb_film
+        <set>
+            <if test="filmName != null">
+                film_name = #{filmName,jdbcType=VARCHAR},
+            </if>
+            <if test="filmType != null">
+                film_type = #{filmType,jdbcType=INTEGER},
+            </if>
+            <if test="imgAddress != null">
+                img_address = #{imgAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="filmScore != null">
+                film_score = #{filmScore,jdbcType=VARCHAR},
+            </if>
+            <if test="filmPresalenum != null">
+                film_preSaleNum = #{filmPresalenum,jdbcType=INTEGER},
+            </if>
+            <if test="filmBoxOffice != null">
+                film_box_office = #{filmBoxOffice,jdbcType=INTEGER},
+            </if>
+            <if test="filmSource != null">
+                film_source = #{filmSource,jdbcType=INTEGER},
+            </if>
+            <if test="filmCats != null">
+                film_cats = #{filmCats,jdbcType=VARCHAR},
+            </if>
+            <if test="filmArea != null">
+                film_area = #{filmArea,jdbcType=INTEGER},
+            </if>
+            <if test="filmDate != null">
+                film_date = #{filmDate,jdbcType=INTEGER},
+            </if>
+            <if test="filmTime != null">
+                film_time = #{filmTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="filmStatus != null">
+                film_status = #{filmStatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where UUID = #{uuid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="club.lightingsummer.movie.film.api.po.Film">
     update tb_film
     set film_name = #{filmName,jdbcType=VARCHAR},
       film_type = #{filmType,jdbcType=INTEGER},

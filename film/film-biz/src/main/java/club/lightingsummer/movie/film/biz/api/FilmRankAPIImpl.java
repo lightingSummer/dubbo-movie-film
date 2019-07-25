@@ -43,7 +43,7 @@ public class FilmRankAPIImpl implements FilmRankAPI {
         try {
             PageHelper.startPage(1, 10, "film_box_office");
             //正在上映 status = 1
-            List<Film> films = filmMapper.selectByFilmStatus(1);
+            List<Film> films = filmMapper.selectByFilmStatus(1, 99, 99, null);
             filmInfoVOs = VOUtil.getFilmInfoVOs(films);
         } catch (Exception e) {
             logger.error("获取票房排行榜失败" + e.getMessage());
@@ -67,7 +67,7 @@ public class FilmRankAPIImpl implements FilmRankAPI {
         try {
             PageHelper.startPage(1, 10, "film_preSaleNum");
             //即将上映 status = 2
-            List<Film> films = filmMapper.selectByFilmStatus(2);
+            List<Film> films = filmMapper.selectByFilmStatus(2, 99, 99, null);
             filmInfoVOs = VOUtil.getFilmInfoVOs(films);
         } catch (Exception e) {
             logger.error("获取新片预售排行榜" + e.getMessage());
@@ -90,7 +90,7 @@ public class FilmRankAPIImpl implements FilmRankAPI {
         try {
             PageHelper.startPage(1, 10, "film_score");
             //正在上映 status = 1
-            List<Film> films = filmMapper.selectByFilmStatus(1);
+            List<Film> films = filmMapper.selectByFilmStatus(1, 99, 99, null);
             filmInfoVOs = VOUtil.getFilmInfoVOs(films);
         } catch (Exception e) {
             logger.error("获取新片预售排行榜" + e.getMessage());

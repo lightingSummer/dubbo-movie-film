@@ -35,27 +35,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!--生成对应表及类名-->
-        <table tableName="tb_banner" domainObjectName="Banner" enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-
-        <table tableName="tb_cat_dict" domainObjectName="CatDict" enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-
-        <table tableName="tb_film" domainObjectName="Film" enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-
-        <table tableName="tb_film_info" domainObjectName="FilmInfo" enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-
-        <table tableName="tb_source" domainObjectName="Source" enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
-
-        <table tableName="tb_year_dict" domainObjectName="YearDict" enableCountByExample="false"
+        <table tableName="tb_film_actor" domainObjectName="FilmActor" enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
