@@ -11,7 +11,7 @@ based dubbo project film模块<br>
 ##api列表<br>
 
 * 电影信息API，用于获取电影信息接口<br>
-···java
+```java
 public interface FilmInfoAPI {
     // 获取banners
     CommonResponse<List<BannerVO>> getBanners();
@@ -49,10 +49,10 @@ public interface FilmInfoAPI {
     // 获取演员信息
     List<ActorVO> getActors(String filmId);
 }
-···
+```
 
 * 排行榜API，用户获取各种人气排行榜<br>
-···java
+```java
 public interface FilmRankAPI {
     // 获取票房排行榜
     CommonResponse<List<FilmInfoVO>> getBoxRanking();
@@ -66,7 +66,7 @@ public interface FilmRankAPI {
 ```
 
 * 电影信息异步API，dubbo异步调用接口，因为dubbo异步设置只能设置一整个api，而不能注释接口，所以单独写一个api<br>
-···java
+```java
 public interface FilmAsyncServiceApi {
     // 获取影片描述信息
     FilmDescVO getFilmDescAsync(String filmId);
@@ -80,20 +80,20 @@ public interface FilmAsyncServiceApi {
     // 获取演员信息
     List<ActorVO> getActorsAsync(String filmId);
 }
-···
+```
 
 
 ##数据表ddl<br>
 
-···sql
+```sql
 CREATE TABLE `tb_actor` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `actor_name` varchar(50) DEFAULT NULL COMMENT '演员名称',
   `actor_img` varchar(200) DEFAULT NULL COMMENT '演员图片位置',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='演员表';
-···
-···sql
+```
+```sql
 CREATE TABLE `tb_banner` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `banner_address` varchar(50) DEFAULT NULL COMMENT 'banner图存放路径',
@@ -101,15 +101,15 @@ CREATE TABLE `tb_banner` (
   `is_valid` int(11) DEFAULT '0' COMMENT '是否弃用 0-失效,1-有效',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='banner信息表';
-···
-···sql
+```
+```sql
 CREATE TABLE `tb_cat_dict` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `show_name` varchar(100) DEFAULT NULL COMMENT '显示名称',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='类型信息表';
-···
-···sql
+```
+```sql
 CREATE TABLE `tb_film` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `film_name` varchar(100) DEFAULT NULL COMMENT '影片名称',
@@ -126,8 +126,8 @@ CREATE TABLE `tb_film` (
   `film_status` int(11) DEFAULT NULL COMMENT '影片状态,1-正在热映，2-即将上映，3-经典影片',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='影片主表';
-···
-···sql
+```
+```sql
 CREATE TABLE `tb_film_actor` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `film_id` int(11) DEFAULT NULL COMMENT '影片编号,对应mooc_film_t',
@@ -135,8 +135,8 @@ CREATE TABLE `tb_film_actor` (
   `role_name` varchar(100) DEFAULT NULL COMMENT '角色名称',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='影片与演员映射表';
-···
-···sql
+```
+```sql
 CREATE TABLE `tb_film_info` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `film_id` varchar(100) DEFAULT NULL COMMENT '影片编号',
@@ -149,18 +149,18 @@ CREATE TABLE `tb_film_info` (
   `film_imgs` text COMMENT '影片图片集地址,多个图片以逗号分隔',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='影片主表';
-···
-···sql
+```
+```sql
 CREATE TABLE `tb_source` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `show_name` varchar(100) DEFAULT NULL COMMENT '显示名称',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='区域信息表';
-···
-···sql
+```
+```sql
 CREATE TABLE `tb_year_dict` (
   `UUID` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键编号',
   `show_name` varchar(100) DEFAULT NULL COMMENT '显示名称',
   PRIMARY KEY (`UUID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='年代信息表';
-···
+```
