@@ -1,6 +1,6 @@
 # dubbo-movie-film<br>
 based dubbo project film模块<br>
-影院模块<br>
+影片模块<br>
 
 ## 用到的技术及实现主要功能<br>
 * 使用dubbo提供film信息各种查询服务，使用zookeeper做注册中心，用于服务注册及调用<br>
