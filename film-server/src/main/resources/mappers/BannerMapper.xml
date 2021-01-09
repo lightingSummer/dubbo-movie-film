@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.lightingsummer.movie.film.mapper.BannerMapper">
+  <resultMap id="BaseResultMap" type="club.lightingsummer.movie.film.po.Banner">
+    <id column="UUID" jdbcType="INTEGER" property="uuid" />
+    <result column="banner_address" jdbcType="VARCHAR" property="bannerAddress" />
+    <result column="banner_url" jdbcType="VARCHAR" property="bannerUrl" />
+    <result column="is_valid" jdbcType="INTEGER" property="isValid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    UUID, banner_address, banner_url, is_valid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_banner
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_banner
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="club.lightingsummer.movie.film.po.Banner">
+    insert into tb_banner (UUID, banner_address, banner_url, 
+      is_valid)
+    values (#{uuid,jdbcType=INTEGER}, #{bannerAddress,jdbcType=VARCHAR}, #{bannerUrl,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="club.lightingsummer.movie.film.po.Banner">
+    insert into tb_banner
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        UUID,
+      </if>
+      <if test="bannerAddress != null">
+        banner_address,
+      </if>
+      <if test="bannerUrl != null">
+        banner_url,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=INTEGER},
+      </if>
+      <if test="bannerAddress != null">
+        #{bannerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerUrl != null">
+        #{bannerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="club.lightingsummer.movie.film.po.Banner">
+    update tb_banner
+    <set>
+      <if test="bannerAddress != null">
+        banner_address = #{bannerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="bannerUrl != null">
+        banner_url = #{bannerUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="club.lightingsummer.movie.film.po.Banner">
+    update tb_banner
+    set banner_address = #{bannerAddress,jdbcType=VARCHAR},
+      banner_url = #{bannerUrl,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER}
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+</mapper>

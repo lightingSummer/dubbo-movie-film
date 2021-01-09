@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.lightingsummer.movie.film.mapper.FilmInfoMapper">
+  <resultMap id="BaseResultMap" type="club.lightingsummer.movie.film.po.FilmInfo">
+    <id column="UUID" jdbcType="INTEGER" property="uuid" />
+    <result column="film_id" jdbcType="VARCHAR" property="filmId" />
+    <result column="film_en_name" jdbcType="VARCHAR" property="filmEnName" />
+    <result column="film_score" jdbcType="VARCHAR" property="filmScore" />
+    <result column="film_score_num" jdbcType="INTEGER" property="filmScoreNum" />
+    <result column="film_length" jdbcType="INTEGER" property="filmLength" />
+    <result column="director_id" jdbcType="INTEGER" property="directorId" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="club.lightingsummer.movie.film.po.FilmInfoWithBLOBs">
+    <result column="biography" jdbcType="LONGVARCHAR" property="biography" />
+    <result column="film_imgs" jdbcType="LONGVARCHAR" property="filmImgs" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    UUID, film_id, film_en_name, film_score, film_score_num, film_length, director_id
+  </sql>
+  <sql id="Blob_Column_List">
+    biography, film_imgs
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_film_info
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_film_info
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="club.lightingsummer.movie.film.po.FilmInfoWithBLOBs">
+    insert into tb_film_info (UUID, film_id, film_en_name, 
+      film_score, film_score_num, film_length, 
+      director_id, biography, film_imgs
+      )
+    values (#{uuid,jdbcType=INTEGER}, #{filmId,jdbcType=VARCHAR}, #{filmEnName,jdbcType=VARCHAR}, 
+      #{filmScore,jdbcType=VARCHAR}, #{filmScoreNum,jdbcType=INTEGER}, #{filmLength,jdbcType=INTEGER}, 
+      #{directorId,jdbcType=INTEGER}, #{biography,jdbcType=LONGVARCHAR}, #{filmImgs,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="club.lightingsummer.movie.film.po.FilmInfoWithBLOBs">
+    insert into tb_film_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        UUID,
+      </if>
+      <if test="filmId != null">
+        film_id,
+      </if>
+      <if test="filmEnName != null">
+        film_en_name,
+      </if>
+      <if test="filmScore != null">
+        film_score,
+      </if>
+      <if test="filmScoreNum != null">
+        film_score_num,
+      </if>
+      <if test="filmLength != null">
+        film_length,
+      </if>
+      <if test="directorId != null">
+        director_id,
+      </if>
+      <if test="biography != null">
+        biography,
+      </if>
+      <if test="filmImgs != null">
+        film_imgs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=INTEGER},
+      </if>
+      <if test="filmId != null">
+        #{filmId,jdbcType=VARCHAR},
+      </if>
+      <if test="filmEnName != null">
+        #{filmEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="filmScore != null">
+        #{filmScore,jdbcType=VARCHAR},
+      </if>
+      <if test="filmScoreNum != null">
+        #{filmScoreNum,jdbcType=INTEGER},
+      </if>
+      <if test="filmLength != null">
+        #{filmLength,jdbcType=INTEGER},
+      </if>
+      <if test="directorId != null">
+        #{directorId,jdbcType=INTEGER},
+      </if>
+      <if test="biography != null">
+        #{biography,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="filmImgs != null">
+        #{filmImgs,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="club.lightingsummer.movie.film.po.FilmInfoWithBLOBs">
+    update tb_film_info
+    <set>
+      <if test="filmId != null">
+        film_id = #{filmId,jdbcType=VARCHAR},
+      </if>
+      <if test="filmEnName != null">
+        film_en_name = #{filmEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="filmScore != null">
+        film_score = #{filmScore,jdbcType=VARCHAR},
+      </if>
+      <if test="filmScoreNum != null">
+        film_score_num = #{filmScoreNum,jdbcType=INTEGER},
+      </if>
+      <if test="filmLength != null">
+        film_length = #{filmLength,jdbcType=INTEGER},
+      </if>
+      <if test="directorId != null">
+        director_id = #{directorId,jdbcType=INTEGER},
+      </if>
+      <if test="biography != null">
+        biography = #{biography,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="filmImgs != null">
+        film_imgs = #{filmImgs,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="club.lightingsummer.movie.film.po.FilmInfoWithBLOBs">
+    update tb_film_info
+    set film_id = #{filmId,jdbcType=VARCHAR},
+      film_en_name = #{filmEnName,jdbcType=VARCHAR},
+      film_score = #{filmScore,jdbcType=VARCHAR},
+      film_score_num = #{filmScoreNum,jdbcType=INTEGER},
+      film_length = #{filmLength,jdbcType=INTEGER},
+      director_id = #{directorId,jdbcType=INTEGER},
+      biography = #{biography,jdbcType=LONGVARCHAR},
+      film_imgs = #{filmImgs,jdbcType=LONGVARCHAR}
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="club.lightingsummer.movie.film.po.FilmInfo">
+    update tb_film_info
+    set film_id = #{filmId,jdbcType=VARCHAR},
+      film_en_name = #{filmEnName,jdbcType=VARCHAR},
+      film_score = #{filmScore,jdbcType=VARCHAR},
+      film_score_num = #{filmScoreNum,jdbcType=INTEGER},
+      film_length = #{filmLength,jdbcType=INTEGER},
+      director_id = #{directorId,jdbcType=INTEGER}
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+</mapper>
